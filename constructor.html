@@ -2,56 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONSTRUCTOR MAESTRO | BÚNKER</title>
+    <title>CONSTRUCTOR MAESTRO V3.2</title>
     <style>
-        :root { --cobalto: #0072ff; --noche: #0a0a0b; --pizarra: #16161a; --texto: #f8fafc; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--noche); color: var(--texto); margin: 0; padding-top: 60px; overflow: hidden; }
+        body { font-family: sans-serif; background: #0f0f12; color: #fff; margin: 0; padding: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { color: #4f46e5; text-decoration: none; font-size: 14px; }
+        .editor-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 80vh; }
+        textarea { width: 100%; background: #16161a; color: #10b981; border: 1px solid #333; padding: 15px; border-radius: 8px; font-family: monospace; resize: none; font-size: 13px; outline: none;}
+        #preview { background: white; color: black; border-radius: 8px; padding: 30px; overflow-y: auto; }
         
-        .navbar { position: fixed; top: 0; width: 100%; background: var(--pizarra); padding: 15px; border-bottom: 1px solid #333; display: flex; justify-content: center; gap: 30px; z-index: 100; }
-        .navbar a { color: #888; text-decoration: none; font-size: 14px; font-weight: 600; }
-        .navbar a.active { color: var(--cobalto); }
-
-        .main-layout { display: flex; height: calc(100vh - 60px); }
-        .editor { width: 40%; background: #000; padding: 15px; border-right: 1px solid #333; display: flex; flex-direction: column; }
-        .preview-container { width: 60%; background: #333; position: relative; }
-        
-        /* El secreto está aquí: un iframe que aísla el código */
-        iframe { width: 100%; height: 100%; border: none; background: white; }
-        
-        textarea { flex-grow: 1; background: transparent; color: #10b981; border: none; font-family: 'Consolas', monospace; font-size: 13px; outline: none; resize: none; }
-        h2 { font-size: 12px; color: var(--cobalto); text-transform: uppercase; margin: 0 0 10px 0; letter-spacing: 1px; }
+        /* Esta línea asegura que las imágenes que pegues se adapten y no rompan el cuadro blanco */
+        #preview img { max-width: 100%; height: auto; } 
     </style>
 </head>
 <body>
-
-<nav class="navbar">
-    <a href="index.html">🏠 INICIO</a>
-    <a href="constructor.html" class="active">🛠️ CONSTRUCTOR</a>
-    <a href="diagnostico.html">📊 DIAGNÓSTICO</a>
-</nav>
-
-<div class="main-layout">
-    <div class="editor">
-        <h2>Editor de Bloques (HTML/CSS)</h2>
-        <textarea id="htmlInput" placeholder="Pega aquí el código de 'Recupere el control'..." oninput="updatePreview()"></textarea>
+    <div class="nav"><a href="index.html">← Volver al Panel de Control</a></div>
+    <h1>🛠️ Constructor de Bloques</h1>
+    <div class="editor-container">
+        <textarea id="htmlInput" placeholder="Pega aquí el código o texto para estructurar... Ej: <img src='tu-imagen.png'>" oninput="updatePreview()"></textarea>
+        <div id="preview">
+            <p style="color:#999; text-align:center; margin-top:100px;">La vista previa visual aparecerá aquí...</p>
+        </div>
     </div>
-    <div class="preview-container">
-        <iframe id="visualPreview"></iframe>
-    </div>
-</div>
 
-<script>
-    function updatePreview() {
-        const input = document.getElementById('htmlInput').value;
-        const previewFrame = document.getElementById('visualPreview');
-        const frameDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+    <script>
+        function updatePreview() {
+            const input = document.getElementById('htmlInput').value;
+            // Sustituye los saltos de línea por <br> para que el texto normal también se visualice
+            const formattedInput = input.replace(/\n/g, '<br>');
+            document.getElementById('preview').innerHTML = formattedInput;
+        }
         
-        frameDoc.open();
-        frameDoc.write(input);
-        frameDoc.close();
-    }
-</script>
-
+        // Carga inicial por si acaso
+        updatePreview();
+    </script>
 </body>
 </html>
