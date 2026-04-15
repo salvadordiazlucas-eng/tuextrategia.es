@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnóstico Estratégico | tuextrategia.es</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #020617; color: #f8fafc; padding: 40px; }
+        .box { background: #0f172a; padding: 30px; border-radius: 15px; border: 1px solid #1e293b; max-width: 800px; margin: 0 auto; }
+        h1 { color: #0072ff; margin-top: 0; }
+        .step { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #1e293b; }
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        button { background: #1e293b; color: white; border: 1px solid #334155; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #0072ff; border-color: #0072ff; }
+        .result { background: #064e3b; color: #34d399; padding: 15px; border-radius: 8px; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Centro de Diagnóstico</h1>
+        <p>Utiliza este flujo para determinar la acción inmediata con un cliente.</p>
+        <div class="step">
+            <p><strong>1. ¿El cliente tiene acceso a su perfil de Google?</strong></p>
+            <div class="btn-group">
+                <button onclick="showResult('Si tiene acceso: Proceder a optimización de contenidos y automatización de reseñas.')">SÍ</button>
+                <button onclick="showResult('No tiene acceso: Iniciar protocolo de reclamación de propiedad con el número de caso actual [9-8115000040048][cite: 1, 12].')">NO</button>
+            </div>
+        </div>
+        <div id="resultado" class="result"></div>
+    </div>
+    <script>
+        function showResult(text) {
+            const res = document.getElementById('resultado');
+            res.innerText = text;
+            res.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
