@@ -2,56 +2,62 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Constructor Maestro V3.4 | Editor Pro & GitHub Ready</title>
+    <title>Constructor Maestro V3.5 | Editor Pro + SEO Dinámico</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; }
+        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
         .sidebar { width: 480px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .preview { flex-grow: 1; background: #111; display: flex; flex-direction: column; position: relative; }
         
-        /* Panel de Código para GitHub */
-        #githubOutput { background: #000; color: #00ff88; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 11px; margin-top: 15px; display: none; border: 1px solid var(--success); max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        /* Panel SEO Avanzado */
+        .seo-panel { background: rgba(0, 114, 255, 0.05); border: 1px solid rgba(0, 114, 255, 0.2); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; }
+        .seo-stat { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .ok { color: var(--success); }
+        .warn { color: var(--warning); }
+        .bad { color: var(--danger); }
+
+        /* GitHub Output */
+        #githubOutput { background: #000; color: #00ff88; padding: 15px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 11px; margin-top: 15px; display: none; border: 1px solid var(--success); max-height: 150px; overflow-y: auto; white-space: pre-wrap; }
 
         /* Tarjetas de Edición */
         .modulo-card { background: var(--pizarra); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--cobalto); position: relative; }
         .controls-pos { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
         .btn-pos { background: #0f172a; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 4px; padding: 2px 8px; font-size: 10px; }
 
-        /* Editor Enriquecido */
-        .rich-editor { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; margin-top: 8px; min-height: 80px; font-size: 14px; line-height: 1.5; outline: none; }
-        .rich-editor:focus { border-color: var(--cobalto); }
-        .toolbar { display: flex; gap: 5px; margin-top: 10px; }
-        .btn-tool { background: #334155; border: none; color: white; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 11px; }
+        /* Rich Editor */
+        .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; margin-top: 8px; min-height: 100px; font-size: 14px; line-height: 1.6; outline: none; text-align: left; }
+        .toolbar { display: flex; gap: 5px; margin-top: 10px; background: #1e293b; padding: 5px; border-radius: 4px; }
+        .btn-tool { background: #0f172a; border: 1px solid #475569; color: white; padding: 3px 7px; border-radius: 3px; cursor: pointer; font-size: 10px; }
+        .btn-tool:hover { background: var(--cobalto); }
 
         input { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; margin-top: 8px; box-sizing: border-box; }
-        
         .btn-main { background: var(--cobalto); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        .btn-add { background: transparent; border: 1px dashed var(--cobalto); color: var(--cobalto); margin: 10px 0 20px 0; }
         
         iframe { width: 100%; height: 100%; border: none; background: var(--noche); transition: all 0.3s; }
         .mobile-view { width: 375px; height: 667px; border: 12px solid #333; border-radius: 30px; margin: 20px auto; }
-        
-        .seo-report { font-size: 11px; color: #94a3b8; margin-top: 10px; padding: 10px; background: rgba(0,114,255,0.05); border-radius: 6px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2 style="margin-top:0">Constructor Maestro V3.4</h2>
+    <h2 style="margin-top:0">Constructor Maestro V3.5</h2>
     
-    <div id="importArea">
-        <label style="font-size: 11px; color: #94a3b8;">IMPORTAR CÓDIGO HTML:</label>
-        <textarea id="rawInput" style="height: 60px; width:100%; background:#000; color:#fff; border:1px solid #334155; border-radius:6px; font-size:10px;" placeholder="Pega el código aquí..."></textarea>
-        <button class="btn-main" style="background:#475569; font-size:12px;" onclick="importarHTML()">Analizar Estructura</button>
+    <div class="seo-panel">
+        <strong style="color:var(--cobalto)">AUDITORÍA SEO:</strong>
+        <div id="seoStats" style="margin-top:10px;">
+            </div>
     </div>
 
-    <div id="seoBadge" class="seo-report">Esperando análisis...</div>
+    <div id="importArea">
+        <textarea id="rawInput" style="height: 50px; width:100%; background:#000; color:#fff; border:1px solid #334155; border-radius:6px; font-size:10px;" placeholder="Pega código para analizar..."></textarea>
+        <button class="btn-main" style="background:#475569; font-size:12px; padding:8px;" onclick="importarHTML()">Analizar Estructura Existente</button>
+    </div>
 
-    <button class="btn-main btn-add" onclick="añadirNuevo()">+ Añadir Módulo</button>
+    <button class="btn-main" style="background:transparent; border:1px dashed var(--cobalto); color:var(--cobalto); margin-top:15px;" onclick="añadirNuevo()">+ Añadir Módulo Nuevo</button>
     
-    <div id="editorInputs"></div>
+    <div id="editorInputs" style="margin-top:20px;"></div>
 
     <button class="btn-main" style="background: var(--success);" onclick="generarCodigoGitHub()">Generar Código para GitHub</button>
     <div id="githubOutput"></div>
@@ -59,8 +65,8 @@
 
 <div class="preview">
     <div style="background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 10px;">
-        <button class="btn-pos" onclick="setDevice('pc')">💻 PC</button>
-        <button class="btn-pos" onclick="setDevice('mobile')">📱 Móvil</button>
+        <button class="btn-pos" onclick="setDevice('pc')">Computador</button>
+        <button class="btn-pos" onclick="setDevice('mobile')">Móvil</button>
     </div>
     <iframe id="vistaPrevia"></iframe>
 </div>
@@ -68,10 +74,10 @@
 <script>
     let modulos = [];
     
-    const htmlBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"><style>body{margin:0;font-family:'Inter',sans-serif;background:#020617;color:white;line-height:1.6;text-align:center;}section{padding:80px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);}h1{font-size:2.8rem;margin:20px 0;letter-spacing:-2px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}h2{font-size:2.2rem;margin:20px 0;}p{color:#94a3b8;max-width:700px;font-size:1.1rem;margin:10px auto;text-wrap:pretty;}.text-center{text-align:center;}.text-left{text-align:left;}.text-right{text-align:right;}img{max-width:100%;width:280px;height:auto;margin-bottom:20px;filter:drop-shadow(0 0 20px rgba(0, 114, 255, 0.2));border-radius:10px;}@media(max-width:768px){h1{font-size:2rem;}section{padding:50px 20px;}}</style></head><body><div id="app"></div></body></html>`;
+    const htmlBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"><style>body{margin:0;font-family:'Inter',sans-serif;background:#020617;color:white;line-height:1.6;text-align:center;}section{padding:80px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid rgba(255,255,255,0.05);}h1{font-size:3rem;margin:20px 0;letter-spacing:-2px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}h2{font-size:2.2rem;margin:20px 0;color:#fff;}p, div{color:#94a3b8;max-width:750px;font-size:1.15rem;margin:10px auto;text-wrap:pretty;}b, strong{color:#fff;}img{max-width:100%;width:300px;height:auto;margin-bottom:25px;filter:drop-shadow(0 0 20px rgba(0, 114, 255, 0.2));border-radius:12px;}@media(max-width:768px){h1{font-size:2.2rem;}section{padding:60px 20px;}}</style></head><body><div id="app"></div></body></html>`;
 
     function añadirNuevo() {
-        modulos.push({ titulo: "Nuevo Título", texto: "Escribe aquí tu descripción...", imagen: "", alineacion: "center" });
+        modulos.push({ titulo: "Nuevo Título", texto: "Escribe contenido aquí...", imagen: "", alineacion: "center" });
         renderUI();
     }
 
@@ -87,45 +93,52 @@
                     <button class="btn-pos" onclick="mover(${i},1)">▼</button>
                     <button class="btn-pos" style="color:#ff4444" onclick="eliminar(${i})">✕</button>
                 </div>
-                <input type="text" value="${m.titulo}" placeholder="Título" oninput="modulos[${i}].titulo=this.value; updateVp()">
+                <input type="text" value="${m.titulo}" placeholder="${i===0 ? 'TÍTULO H1 (Principal)' : 'TÍTULO H2'}" oninput="modulos[${i}].titulo=this.value; updateVp()">
                 <div class="toolbar">
-                    <button class="btn-tool" onclick="execCmd('bold', ${i})"><b>B</b></button>
-                    <button class="btn-tool" onclick="updateAlign(${i}, 'left')">Izq</button>
-                    <button class="btn-tool" onclick="updateAlign(${i}, 'center')">Cent</button>
-                    <button class="btn-tool" onclick="updateAlign(${i}, 'right')">Der</button>
+                    <button class="btn-tool" onclick="format('bold')"><b>Negrita</b></button>
+                    <button class="btn-tool" onclick="updateAlign(${i}, 'left')">Izquierda</button>
+                    <button class="btn-tool" onclick="updateAlign(${i}, 'center')">Centro</button>
+                    <button class="btn-tool" onclick="updateAlign(${i}, 'right')">Derecha</button>
                 </div>
-                <div class="rich-editor" contenteditable="true" oninput="modulos[${i}].texto=this.innerHTML; updateVp()">${m.texto}</div>
-                <input type="text" value="${m.imagen}" placeholder="Ruta imagen (ej: logo.png)" oninput="modulos[${i}].imagen=this.value; updateVp()">
+                <div class="rich-editor" contenteditable="true" oninput="modulos[${i}].texto=this.innerHTML; updateVp()" style="text-align: ${m.alineacion}">${m.texto}</div>
+                <input type="text" value="${m.imagen}" placeholder="Ruta imagen (ej: assets/imagen.png)" oninput="modulos[${i}].imagen=this.value; updateVp()">
             `;
             container.appendChild(card);
         });
         updateVp();
     }
 
-    function updateAlign(i, align) {
-        modulos[i].alineacion = align;
-        updateVp();
-    }
-
-    function execCmd(cmd, i) {
-        document.execCommand(cmd, false, null);
-    }
+    function format(cmd) { document.execCommand(cmd, false, null); }
+    function updateAlign(i, align) { modulos[i].alineacion = align; renderUI(); }
 
     function updateVp() {
         let content = '';
+        let wordCount = 0;
+        let imgIssues = 0;
+
         modulos.forEach((m, idx) => {
             const tag = idx === 0 ? 'h1' : 'h2';
-            content += `<section class="text-${m.alineacion}">
-                ${m.imagen ? `<img src="${m.imagen}" alt="${m.titulo}">` : ''}
+            const textContent = m.texto.replace(/<[^>]*>/g, '');
+            wordCount += textContent.split(/\s+/).filter(w => w.length > 0).length;
+            if(m.imagen && !m.titulo) imgIssues++;
+
+            content += `<section style="text-align:${m.alineacion}">
+                ${m.imagen ? `<img src="${m.imagen}" alt="${m.titulo || 'Imagen de sección'}">` : ''}
                 <${tag}>${m.titulo}</${tag}>
                 <div>${m.texto}</div>
             </section>`;
         });
+
         const fullHtml = htmlBase.replace('<div id="app"></div>', `<div id="app">${content}</div>`);
         document.getElementById('vistaPrevia').srcdoc = fullHtml;
         
-        // SEO Rápido
-        document.getElementById('seoBadge').innerHTML = `Módulos: ${modulos.length} | H1: ${modulos.length > 0 ? 'OK' : 'Falta'}`;
+        // Actualizar SEO Stats
+        const seoStats = document.getElementById('seoStats');
+        seoStats.innerHTML = `
+            <div class="seo-stat">Jerarquía H1: <span class="${modulos.length > 0 ? 'ok' : 'bad'}">${modulos.length > 0 ? 'Correcta' : 'Faltante'}</span></div>
+            <div class="seo-stat">Palabras Totales: <span class="${wordCount > 300 ? 'ok' : 'warn'}">${wordCount}</span></div>
+            <div class="seo-stat">Imágenes con ALT: <span class="${imgIssues === 0 ? 'ok' : 'bad'}">${imgIssues === 0 ? 'Todas OK' : 'Faltan ' + imgIssues}</span></div>
+        `;
     }
 
     function generarCodigoGitHub() {
@@ -133,7 +146,6 @@
         const out = document.getElementById('githubOutput');
         out.style.display = 'block';
         out.innerText = code;
-        alert("Código generado abajo. Selecciónalo y cópialo para tu index.html en GitHub.");
     }
 
     function mover(i, d) {
@@ -141,11 +153,9 @@
         if(n>=0 && n<modulos.length) { [modulos[i], modulos[n]] = [modulos[n], modulos[i]]; renderUI(); }
     }
 
-    function eliminar(i) { modulos.splice(i,1); renderUI(); }
+    function eliminar(i) { if(confirm('¿Eliminar módulo?')) { modulos.splice(i,1); renderUI(); } }
     
-    function setDevice(t) {
-        document.getElementById('vistaPrevia').className = (t==='mobile') ? 'mobile-view' : '';
-    }
+    function setDevice(t) { document.getElementById('vistaPrevia').className = (t==='mobile') ? 'mobile-view' : ''; }
 
     function importarHTML() {
         const raw = document.getElementById('rawInput').value;
@@ -159,7 +169,7 @@
                     titulo: s.querySelector('h1, h2')?.innerText || "",
                     texto: s.querySelector('div, p')?.innerHTML || "",
                     imagen: s.querySelector('img')?.getAttribute('src') || "",
-                    alineacion: "center"
+                    alineacion: s.style.textAlign || "center"
                 });
             });
             renderUI();
