@@ -2,74 +2,61 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Búnker V4.6 | Estructurador Sistémico</title>
+    <title>Búnker V4.7 | Control de Alineación</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Panel Izquierdo (Editor) */
         .sidebar { width: 650px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .modulo-card { background: var(--pizarra); padding: 20px; border-radius: 16px; margin-bottom: 25px; border-left: 5px solid var(--cobalto); position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modulo-card { background: var(--pizarra); padding: 20px; border-radius: 16px; margin-bottom: 25px; border-left: 5px solid var(--cobalto); position: relative; }
         
-        /* Controles de Acción */
         .controls-top { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; }
         .btn-mini { background: #0b1120; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 6px; padding: 5px 10px; font-size: 12px; }
-        .btn-mini:hover { background: var(--cobalto); }
 
-        /* Editores */
-        .toolbar { display: flex; gap: 5px; margin: 10px 0 5px; background: #0b1120; padding: 6px; border-radius: 8px; border: 1px solid #334155; }
-        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .toolbar { display: flex; gap: 5px; margin: 10px 0 5px; background: #0b1120; padding: 6px; border-radius: 8px; border: 1px solid #334155; align-items: center; }
+        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .align-select { background: #1e293b; color: white; border: 1px solid #475569; font-size: 11px; padding: 2px; border-radius: 4px; margin-left: auto; }
         
         .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 8px; min-height: 80px; font-size: 14px; outline: none; line-height: 1.6; }
         input { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 10px; border-radius: 8px; margin-top: 8px; box-sizing: border-box; }
         
-        .btn-main { background: var(--cobalto); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; font-size: 14px; text-transform: uppercase; }
-        
-        /* Vista Previa */
-        .preview { flex-grow: 1; background: #000; position: relative; }
+        .btn-main { background: var(--cobalto); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; }
+        .preview { flex-grow: 1; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
-        
-        .label-sm { font-size: 10px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 5px; }
+        .label-sm { font-size: 10px; color: var(--accent); font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2 style="margin:0 0 15px 0; letter-spacing:-1px;">Búnker V4.6 <span style="font-size:12px; color:var(--success);">● Sincronizado</span></h2>
+    <h2 style="margin:0 0 15px 0;">Búnker V4.7</h2>
     
     <div style="background:#000; padding:15px; border-radius:12px; border:1px solid var(--cobalto); margin-bottom:25px;">
-        <span class="label-sm">Pegar Código Madre:</span>
-        <textarea id="rawInput" style="width:100%; height:70px; background:transparent; color:#00ff88; border:none; font-family:monospace; font-size:11px; outline:none;" placeholder="Pega aquí el código de tu web..."></textarea>
+        <textarea id="rawInput" style="width:100%; height:60px; background:transparent; color:#00ff88; border:none; font-family:monospace; font-size:11px; outline:none;" placeholder="Pega aquí el código publicado..."></textarea>
         <button class="btn-main" style="background:#334155; padding:10px;" onclick="importarSistemico()">SINCRONIZAR ESTRUCTURA</button>
     </div>
 
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button class="btn-main" onclick="añadir('hero')">+ Bloque Hero</button>
-        <button class="btn-main" style="background:var(--warning); color:black;" onclick="añadir('card')">+ Bloque Servicio</button>
+        <button class="btn-main" onclick="añadir('hero')">+ Bloque Contenido</button>
+        <button class="btn-main" style="background:var(--warning); color:black;" onclick="añadir('card')">+ Tarjeta Servicio</button>
     </div>
 
     <div id="editorInputs" style="margin-top:20px;"></div>
 
-    <button class="btn-main" style="background: var(--success); font-size: 18px; height: 70px;" onclick="generarFinal()">GENERAR CÓDIGO GITHUB</button>
-    <div id="codeWrapper" style="display:none; margin-top:20px;">
-        <pre id="githubOutput" style="background:#000; color:#00ff88; padding:20px; font-size:11px; border-radius:12px; overflow-x:auto; border:1px solid var(--success);"></pre>
-    </div>
+    <button class="btn-main" style="background: var(--success); font-size: 18px;" onclick="generarFinal()">GENERAR CÓDIGO FINAL</button>
+    <div id="codeWrapper" style="display:none; margin-top:20px;"><pre id="githubOutput" style="background:#000; color:#00ff88; padding:20px; font-size:11px; border-radius:12px; overflow-x:auto;"></pre></div>
 </div>
 
-<div class="preview">
-    <iframe id="vistaPrevia"></iframe>
-</div>
+<div class="preview"><iframe id="vistaPrevia"></iframe></div>
 
 <script>
     let secciones = [];
-    
-    // Base de estilos extraída de tu código real
-    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;text-align:center;}section{padding:100px 24px;max-width:1100px;margin:0 auto;}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);}.logo-img{width:100%;max-width:280px;margin-bottom:20px;}h1{font-size:clamp(32px,8vw,68px);font-weight:700;margin-bottom:20px;letter-spacing:-3px;background:linear-gradient(to bottom,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.sub{font-size:clamp(16px,3vw,20px);color:var(--text-muted);max-width:650px;margin-bottom:30px;}.cta-btn{display:inline-block;width:100%;max-width:380px;padding:20px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:16px;text-transform:uppercase;box-shadow:0 15px 35px rgba(0,114,255,0.4);}.service-card{background:var(--card-bg);border:1px solid var(--border);border-radius:32px;margin-bottom:60px;text-align:left;overflow:hidden;}.visual-container img{width:100%;display:block;}.service-content-pro{padding:40px;}.service-tag{color:var(--accent);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:2px;display:block;margin-bottom:15px;}.price-amount{font-size:38px;font-weight:700;}.service-footer{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid var(--border);margin-top:20px;}.btn-small{padding:14px 28px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:12px;}</style></head><body>`;
+    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;}section{padding:80px 24px;max-width:1100px;margin:0 auto;}.hero{min-height:90vh;display:flex;flex-direction:column;background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);justify-content:center;}.logo-img{width:100%;max-width:250px;margin-bottom:20px;display:inline-block;}h1{font-size:clamp(32px,7vw,60px);font-weight:700;margin:15px 0;letter-spacing:-2px;background:linear-gradient(to bottom,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.sub{font-size:1.2rem;color:var(--text-muted);max-width:700px;margin-bottom:30px;display:inline-block;}.cta-btn{display:inline-block;width:100%;max-width:350px;padding:18px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:14px;text-transform:uppercase;}.service-card{background:var(--card-bg);border:1px solid var(--border);border-radius:28px;margin-bottom:40px;overflow:hidden;}.visual-container img{width:100%;display:block;}.service-content-pro{padding:35px;}.service-tag{color:var(--accent);font-weight:700;font-size:12px;text-transform:uppercase;display:block;margin-bottom:12px;}.price-amount{font-size:35px;font-weight:700;}.service-footer{display:flex;justify-content:space-between;align-items:center;padding-top:25px;border-top:1px solid var(--border);margin-top:20px;}.btn-small{padding:12px 24px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:10px;}</style></head><body>`;
 
     function añadir(tipo) {
-        if(tipo === 'hero') secciones.push({ tipo: 'hero', h1: 'Título', sub: 'Descripción...', img: 'logo.png', btnT: 'Acción', btnL: '#' });
-        else secciones.push({ tipo: 'card', tag: 'Intervención', h3: 'Servicio', p: 'Descripción...', img: 'google-presencia.png', precio: '499€', btnT: 'Iniciar', btnL: '#' });
+        if(tipo === 'hero') secciones.push({ tipo: 'hero', h1: 'Título', sub: 'Descripción...', img: 'logo.png', btnT: 'Acción', btnL: '#', align: 'center' });
+        else secciones.push({ tipo: 'card', tag: 'Intervención', h3: 'Servicio', p: 'Descripción...', img: 'google-presencia.png', precio: '499€', btnT: 'Iniciar', btnL: '#', align: 'left' });
         render();
     }
 
@@ -85,32 +72,12 @@
         const parser = new DOMParser();
         const doc = parser.parseFromString(raw, 'text/html');
         secciones = [];
-
-        // Importar Hero
         const hero = doc.querySelector('.hero');
         if(hero) {
-            secciones.push({
-                tipo: 'hero',
-                h1: hero.querySelector('h1')?.innerText || '',
-                sub: hero.querySelector('.sub')?.innerHTML || '',
-                img: hero.querySelector('img')?.getAttribute('src') || '',
-                btnT: hero.querySelector('.cta-btn')?.innerText || '',
-                btnL: hero.querySelector('.cta-btn')?.getAttribute('href') || '#'
-            });
+            secciones.push({ tipo: 'hero', h1: hero.querySelector('h1')?.innerText || '', sub: hero.querySelector('.sub')?.innerHTML || '', img: hero.querySelector('img')?.src || '', btnT: hero.querySelector('.cta-btn')?.innerText || '', btnL: hero.querySelector('.cta-btn')?.getAttribute('href') || '#', align: hero.style.textAlign || 'center' });
         }
-
-        // Importar Cards
         doc.querySelectorAll('.service-card').forEach(c => {
-            secciones.push({
-                tipo: 'card',
-                tag: c.querySelector('.service-tag')?.innerText || '',
-                h3: c.querySelector('h3')?.innerText || '',
-                p: c.querySelector('p')?.innerHTML || '',
-                img: c.querySelector('img')?.getAttribute('src') || '',
-                precio: c.querySelector('.price-amount')?.innerText || '',
-                btnT: c.querySelector('.btn-small')?.innerText || '',
-                btnL: c.querySelector('.btn-small')?.getAttribute('href') || '#'
-            });
+            secciones.push({ tipo: 'card', tag: c.querySelector('.service-tag')?.innerText || '', h3: c.querySelector('h3')?.innerText || '', p: c.querySelector('p')?.innerHTML || '', img: c.querySelector('img')?.src || '', precio: c.querySelector('.price-amount')?.innerText || '', btnT: c.querySelector('.btn-small')?.innerText || '', btnL: c.querySelector('.btn-small')?.getAttribute('href') || '#', align: c.style.textAlign || 'left' });
         });
         render();
     }
@@ -119,32 +86,25 @@
         const c = document.getElementById('editorInputs'); c.innerHTML = '';
         secciones.forEach((s, i) => {
             const div = document.createElement('div'); div.className = 'modulo-card';
-            let h = `<div class="controls-top">
-                <button class="btn-mini" onclick="mover(${i},-1)">▲</button>
-                <button class="btn-mini" onclick="mover(${i},1)">▼</button>
-                <button class="btn-mini" style="color:var(--warning)" onclick="secciones.splice(${i},1);render()">✕</button>
-            </div>`;
+            let h = `<div class="controls-top"><button class="btn-mini" onclick="mover(${i},-1)">▲</button><button class="btn-mini" onclick="mover(${i},1)">▼</button><button class="btn-mini" style="color:var(--warning)" onclick="secciones.splice(${i},1);render()">✕</button></div>`;
+            
+            const aligns = ['left', 'center', 'right'];
+            let selectAlign = `<select class="align-select" onchange="secciones[${i}].align=this.value;up()">`;
+            aligns.forEach(a => selectAlign += `<option value="${a}" ${s.align === a ? 'selected' : ''}>${a.toUpperCase()}</option>`);
+            selectAlign += `</select>`;
 
             if(s.tipo === 'hero') {
-                h += `<span class="label-sm">Bloque Hero Principal</span>
-                <input type="text" value="${s.h1}" oninput="secciones[i].h1=this.value;up()">
-                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button><button class="btn-tool" onclick="document.execCommand('insertParagraph')">¶</button></div>
-                <div class="rich-editor" contenteditable="true" oninput="secciones[i].sub=this.innerHTML;up()">${s.sub}</div>
-                <input type="text" value="${s.img}" placeholder="Logo URL" oninput="secciones[i].img=this.value;up()">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <input type="text" value="${s.btnT}" placeholder="Texto Botón" oninput="secciones[i].btnT=this.value;up()">
-                    <input type="text" value="${s.btnL}" placeholder="URL Botón" oninput="secciones[i].btnL=this.value;up()">
-                </div>`;
+                h += `<span class="label-sm">Bloque Hero</span><input type="text" value="${s.h1}" oninput="secciones[${i}].h1=this.value;up()">
+                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button>${selectAlign}</div>
+                <div class="rich-editor" contenteditable="true" oninput="secciones[${i}].sub=this.innerHTML;up()">${s.sub}</div>
+                <input type="text" value="${s.img}" placeholder="Logo URL" oninput="secciones[${i}].img=this.value;up()">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><input type="text" value="${s.btnT}" oninput="secciones[${i}].btnT=this.value;up()"><input type="text" value="${s.btnL}" oninput="secciones[${i}].btnL=this.value;up()"></div>`;
             } else {
-                h += `<span class="label-sm">Tarjeta de Servicio</span>
-                <input type="text" value="${s.h3}" placeholder="Título" oninput="secciones[i].h3=this.value;up()">
-                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button></div>
-                <div class="rich-editor" style="min-height:60px;" contenteditable="true" oninput="secciones[i].p=this.innerHTML;up()">${s.p}</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <input type="text" value="${s.tag}" placeholder="Etiqueta" oninput="secciones[i].tag=this.value;up()">
-                    <input type="text" value="${s.precio}" placeholder="PRECIO" oninput="secciones[i].precio=this.value;up()">
-                </div>
-                <input type="text" value="${s.img}" placeholder="Imagen URL" oninput="secciones[i].img=this.value;up()">`;
+                h += `<span class="label-sm">Tarjeta</span><input type="text" value="${s.h3}" oninput="secciones[${i}].h3=this.value;up()">
+                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button>${selectAlign}</div>
+                <div class="rich-editor" style="min-height:60px;" contenteditable="true" oninput="secciones[${i}].p=this.innerHTML;up()">${s.p}</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><input type="text" value="${s.tag}" oninput="secciones[${i}].tag=this.value;up()"><input type="text" value="${s.precio}" oninput="secciones[${i}].precio=this.value;up()"></div>
+                <input type="text" value="${s.img}" placeholder="Imagen URL" oninput="secciones[${i}].img=this.value;up()">`;
             }
             div.innerHTML = h; c.appendChild(div);
         });
@@ -154,8 +114,8 @@
     function up() {
         let b = '';
         secciones.forEach(s => {
-            if(s.tipo === 'hero') b += `<section class="hero"><img src="${s.img}" class="logo-img"><h1 class="headline">${s.h1}</h1><div class="sub">${s.sub}</div><a href="${s.btnL}" class="cta-btn">${s.btnT}</a></section>`;
-            else b += `<section class="services-section"><div class="service-card"><div class="visual-container"><img src="${s.img}"></div><div class="service-content-pro"><span class="service-tag">${s.tag}</span><h3>${s.h3}</h3><p>${s.p}</p><div class="service-footer"><span class="price-amount">${s.precio}</span><a href="${s.btnL}" class="btn-small">${s.btnT}</a></div></div></div></section>`;
+            if(s.tipo === 'hero') b += `<section class="hero" style="text-align:${s.align}"><div style="width:100%">${s.img ? `<img src="${s.img}" class="logo-img">`:''}<h1>${s.h1}</h1><div class="sub">${s.sub}</div><div><a href="${s.btnL}" class="cta-btn">${s.btnT}</a></div></div></section>`;
+            else b += `<section class="services-section" style="text-align:${s.align}"><div class="service-card"><div class="visual-container"><img src="${s.img}"></div><div class="service-content-pro"><span class="service-tag">${s.tag}</span><h3>${s.h3}</h3><p>${s.p}</p><div class="service-footer"><span class="price-amount">${s.precio}</span><a href="${s.btnL}" class="btn-small">${s.btnT}</a></div></div></div></section>`;
         });
         document.getElementById('vistaPrevia').srcdoc = headBase + b + `</body></html>`;
     }
@@ -163,7 +123,6 @@
     function generarFinal() {
         document.getElementById('githubOutput').innerText = document.getElementById('vistaPrevia').srcdoc;
         document.getElementById('codeWrapper').style.display='block';
-        window.scrollTo(0, document.body.scrollHeight);
     }
 </script>
 </body>
