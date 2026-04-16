@@ -2,66 +2,68 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Constructor Búnker V4.2.1 | Gestión de Importación</title>
+    <title>Búnker V4.3 | Cerebro Total</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         .sidebar { width: 580px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .preview { flex-grow: 1; background: #111; display: flex; flex-direction: column; position: relative; }
+        
         .import-box { background: #000; border: 1px solid var(--cobalto); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
         .modulo-card { background: var(--pizarra); padding: 18px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--cobalto); position: relative; }
-        .controls-top { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 10; }
-        .btn-mini { background: #0f172a; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 4px; padding: 3px 7px; font-size: 10px; }
-        .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; margin-top: 5px; min-height: 80px; outline: none; }
-        input, textarea { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; margin-top: 6px; box-sizing: border-box; }
+        
+        /* Toolbar de Edición */
+        .toolbar { display: flex; gap: 4px; margin: 10px 0 5px 0; background: #0b1120; padding: 5px; border-radius: 6px; border: 1px solid #334155; }
+        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: bold; }
+        .btn-tool:hover { background: var(--cobalto); }
+
+        .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; min-height: 80px; font-size: 14px; outline: none; line-height: 1.5; }
+        
+        input { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; margin-top: 6px; box-sizing: border-box; font-size: 12px; }
         .btn-main { background: var(--cobalto); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 12px; }
-        .code-container { position: relative; margin-top: 20px; display: none; }
-        #githubOutput { background: #000; color: #00ff88; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 11px; border: 1px solid var(--success); max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        
+        .grid-item-editor { background: rgba(0,0,0,0.2); padding: 10px; margin-top: 10px; border-radius: 8px; border: 1px dashed #444; }
         iframe { width: 100%; height: 100%; border: none; background: var(--noche); }
-        .mobile-view { width: 375px; height: 667px; border: 12px solid #333; border-radius: 30px; margin: 20px auto; }
+        .label-sm { font-size: 9px; color: var(--cobalto); font-weight: bold; text-transform: uppercase; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2 style="margin:0 0 10px 0;">Búnker V4.2.1</h2>
+    <h2 style="margin:0 0 10px 0;">Búnker V4.3</h2>
 
     <div class="import-box">
-        <span style="font-size:10px; color:var(--cobalto); font-weight:bold;">1. PEGA AQUÍ TU HTML ACTUAL PARA EDITAR:</span>
-        <textarea id="rawInput" style="height: 60px; font-size:10px;" placeholder="Pega el código completo aquí..."></textarea>
-        <button class="btn-main" style="background:#475569; padding:8px; font-size:11px;" onclick="importarHTML()">CARGAR PARA EDITAR</button>
+        <span class="label-sm">Carga masiva de HTML:</span>
+        <textarea id="rawInput" style="width:100%; height: 60px; background:#000; color:#fff; border:none; font-size:10px;" placeholder="Pega el código completo aquí..."></textarea>
+        <button class="btn-main" style="background:#475569; padding:8px; font-size:11px;" onclick="importarHTML()">RESTAURAR ESTRUCTURA TOTAL</button>
     </div>
     
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <button class="btn-main" style="margin-top:0;" onclick="añadirSeccion('hero')">+ Nuevo Hero</button>
-        <button class="btn-main" style="margin-top:0; background:var(--warning); color:black;" onclick="añadirSeccion('grid')">+ Nueva Cuadrícula</button>
+        <button class="btn-main" onclick="añadirSeccion('hero')">+ Nuevo Hero</button>
+        <button class="btn-main" style="background:var(--warning); color:black;" onclick="añadirSeccion('grid')">+ Nueva Cuadrícula</button>
     </div>
 
     <div id="editorInputs" style="margin-top:20px;"></div>
 
-    <button class="btn-main" style="background: var(--success); font-size: 16px; padding: 18px;" onclick="generarCodigoGitHub()">2. GENERAR CÓDIGO FINAL</button>
+    <button class="btn-main" style="background: var(--success); font-size: 16px;" onclick="generarCodigoGitHub()">GENERAR CÓDIGO FINAL</button>
     
-    <div class="code-container" id="codeWrapper">
-        <button class="btn-main" style="background:var(--success); margin-bottom:5px;" onclick="copiarAlPortapapeles()">¡COPIAR CÓDIGO LISTO!</button>
-        <pre id="githubOutput"></pre>
+    <div id="codeWrapper" style="display:none; margin-top:20px;">
+        <button class="btn-main" style="background:var(--success)" onclick="copiarAlPortapapeles()">COPIAR AL PORTAPAPELES</button>
+        <pre id="githubOutput" style="background:#000; color:#00ff88; padding:10px; font-size:10px; border-radius:8px; overflow-x:auto;"></pre>
     </div>
 </div>
 
 <div class="preview">
-    <div style="background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 20px;">
-        <button onclick="setDevice('pc')" style="color:white; background:none; border:none; cursor:pointer;">💻 PC</button>
-        <button onclick="setDevice('mobile')" style="color:white; background:none; border:none; cursor:pointer;">📱 MÓVIL</button>
-    </div>
     <iframe id="vistaPrevia"></iframe>
 </div>
 
 <script>
     let secciones = [];
-    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;text-align:center;}section{padding:100px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}.hero{background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);min-height:85vh;justify-content:center;}.logo-img{width:100%;max-width:280px;filter:drop-shadow(0 0 20px rgba(0,114,255,0.2));margin-bottom:30px;}h1{font-size:clamp(35px, 8vw, 65px);margin:20px 0;letter-spacing:-3px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}h2{font-size:3rem;}.sub{color:var(--text-muted);font-size:1.3rem;max-width:750px;margin:0 auto 35px auto;}.cta-btn, .btn-small{display:inline-block;padding:20px 45px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:18px;box-shadow:0 10px 35px rgba(0,114,255,0.3);text-transform:uppercase;letter-spacing:1px;}.bunker-grid-container{width:100%;max-width:1150px;margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:35px;text-align:left;}.grid-card{background:var(--card-bg);border:1px solid var(--border);border-radius:32px;padding:40px;display:flex;flex-direction:column;gap:15px;}.whatsapp-float{position:fixed;bottom:30px;right:30px;width:65px;z-index:1000;}@media(max-width:991px){.bunker-grid-container{grid-template-columns:1fr;}}</style></head><body>`;
+    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;text-align:center;}section{padding:100px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}.hero{background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);min-height:85vh;justify-content:center;}.logo-img{width:100%;max-width:280px;margin-bottom:30px;}h1{font-size:clamp(35px, 8vw, 65px);margin:20px 0;letter-spacing:-3px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}.sub{color:var(--text-muted);font-size:1.2rem;max-width:750px;margin:0 auto 30px auto;}.cta-btn, .btn-small{display:inline-block;padding:18px 40px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:15px;box-shadow:0 10px 30px rgba(0,114,255,0.3);text-transform:uppercase;}.price-tag{font-size:32px; font-weight:700; color:var(--accent); display:block; margin-bottom:15px;}.bunker-grid-container{width:100%;max-width:1150px;margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);gap:30px;text-align:left;}.grid-card{background:var(--card-bg);border:1px solid var(--border);border-radius:24px;padding:35px;}.whatsapp-float{position:fixed;bottom:30px;right:30px;width:60px;}</style></head><body>`;
 
     function añadirSeccion(tipo) {
-        if(tipo === 'hero') secciones.push({ tipo: 'hero', titulo: 'Título', texto: 'Descripción...', imagen: '', btnText: 'Botón', btnLink: '#', align: 'center' });
+        if(tipo === 'hero') secciones.push({ tipo: 'hero', titulo: 'Título', texto: 'Contenido...', imagen: '', btnText: 'Botón', btnLink: '#', align: 'center' });
         else secciones.push({ tipo: 'grid', titulo: 'Servicios', tarjetas: [] });
         renderUI();
     }
@@ -73,29 +75,50 @@
         const sections = doc.querySelectorAll('section');
         secciones = [];
         sections.forEach(s => {
-            const isHero = s.classList.contains('hero');
-            const isGrid = s.querySelector('.bunker-grid-container');
-            if(isHero) {
-                secciones.push({ tipo: 'hero', titulo: s.querySelector('h1')?.innerText || '', texto: s.querySelector('.sub')?.innerHTML || '', imagen: s.querySelector('img')?.src || '', btnText: s.querySelector('.cta-btn')?.innerText || '', btnLink: s.querySelector('.cta-btn')?.href || '', align: 'center' });
-            } else if(isGrid) {
-                let tarjetas = [];
+            const grid = s.querySelector('.bunker-grid-container');
+            if (grid) {
+                let cards = [];
                 s.querySelectorAll('.grid-card').forEach(c => {
-                    tarjetas.push({ titulo: c.querySelector('h3')?.innerText || '', texto: c.querySelector('p')?.innerText || '', imagen: c.querySelector('img')?.src || '' });
+                    cards.push({ titulo: c.querySelector('h3')?.innerText || '', texto: c.querySelector('p')?.innerText || '', imagen: c.querySelector('img')?.src || '', precio: c.querySelector('.price-tag')?.innerText || '' });
                 });
-                secciones.push({ tipo: 'grid', titulo: s.querySelector('h2')?.innerText || '', tarjetas: tarjetas });
+                secciones.push({ tipo: 'grid', titulo: s.querySelector('h2')?.innerText || '', tarjetas: cards });
+            } else {
+                secciones.push({ tipo: 'hero', titulo: s.querySelector('h1, h2')?.innerText || '', texto: s.querySelector('.sub')?.innerHTML || '', imagen: s.querySelector('img')?.src || '', btnText: s.querySelector('.cta-btn')?.innerText || '', btnLink: s.querySelector('.cta-btn')?.href || '#', align: 'center' });
             }
         });
         renderUI();
     }
+
+    function ejecutar(cmd) { document.execCommand(cmd, false, null); }
 
     function renderUI() {
         const container = document.getElementById('editorInputs'); container.innerHTML = '';
         secciones.forEach((s, i) => {
             const div = document.createElement('div'); div.className = 'modulo-card';
             if(s.tipo === 'hero') {
-                div.innerHTML = `<span class="label-sm">HERO</span><input type="text" value="${s.titulo}" oninput="secciones[${i}].titulo=this.value; updateVp()"><textarea class="rich-editor" oninput="secciones[${i}].texto=this.value; updateVp()">${s.texto}</textarea>`;
+                div.innerHTML = `<span class="label-sm">BLOQUE HERO</span>
+                <input type="text" value="${s.titulo}" oninput="secciones[${i}].titulo=this.value; updateVp()">
+                <div class="toolbar"><button class="btn-tool" onclick="ejecutar('bold')">B</button></div>
+                <div class="rich-editor" contenteditable="true" oninput="secciones[${i}].texto=this.innerHTML; updateVp()">${s.texto}</div>
+                <input type="text" value="${s.imagen}" placeholder="URL Imagen/Logo" oninput="secciones[${i}].imagen=this.value; updateVp()">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <input type="text" value="${s.btnText}" placeholder="Texto Botón" oninput="secciones[${i}].btnText=this.value; updateVp()">
+                    <input type="text" value="${s.btnLink}" placeholder="Link Botón" oninput="secciones[${i}].btnLink=this.value; updateVp()">
+                </div>`;
             } else {
-                div.innerHTML = `<span class="label-sm">CUADRÍCULA</span><input type="text" value="${s.titulo}" oninput="secciones[${i}].titulo=this.value; updateVp()"><button class="btn-main" onclick="secciones[${i}].tarjetas.push({titulo:'',texto:'',imagen:''}); renderUI()">+ Añadir Tarjeta</button>`;
+                div.innerHTML = `<span class="label-sm">CUADRÍCULA</span>
+                <input type="text" value="${s.titulo}" oninput="secciones[${i}].titulo=this.value; updateVp()">
+                <button class="btn-main" style="background:#475569" onclick="secciones[${i}].tarjetas.push({titulo:'',texto:'',imagen:'',precio:''}); renderUI()">+ Añadir Tarjeta</button>`;
+                s.tarjetas.forEach((t, iT) => {
+                    div.innerHTML += `<div class="grid-item-editor">
+                        <input type="text" placeholder="Título Servicio" value="${t.titulo}" oninput="secciones[${i}].tarjetas[${iT}].titulo=this.value; updateVp()">
+                        <textarea style="width:100%; background:#0b1120; color:white; border:1px solid #334155; margin-top:5px;" oninput="secciones[${i}].tarjetas[${iT}].texto=this.value; updateVp()">${t.texto}</textarea>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+                            <input type="text" placeholder="URL Icono" value="${t.imagen}" oninput="secciones[${i}].tarjetas[${iT}].imagen=this.value; updateVp()">
+                            <input type="text" placeholder="Precio (ej. 99€)" value="${t.precio}" oninput="secciones[${i}].tarjetas[${iT}].precio=this.value; updateVp()">
+                        </div>
+                    </div>`;
+                });
             }
             container.appendChild(div);
         });
@@ -103,20 +126,20 @@
     }
 
     function updateVp() {
-        let content = '';
+        let body = '';
         secciones.forEach(s => {
-            if(s.tipo==='hero') content += `<section class="hero"><img src="${s.imagen}" class="logo-img"><h1>${s.titulo}</h1><div class="sub">${s.texto}</div><a href="${s.btnLink}" class="cta-btn">${s.btnText}</a></section>`;
+            if(s.tipo === 'hero') body += `<section class="hero">${s.imagen ? `<img src="${s.imagen}" class="logo-img">`:''}<h1>${s.titulo}</h1><div class="sub">${s.texto}</div><a href="${s.btnLink}" class="cta-btn">${s.btnText}</a></section>`;
             else {
-                let grids = ''; s.tarjetas.forEach(t => grids += `<div class="grid-card"><h3>${t.titulo}</h3><p>${t.texto}</p></div>`);
-                content += `<section><h2>${s.titulo}</h2><div class="bunker-grid-container">${grids}</div></section>`;
+                let cards = '';
+                s.tarjetas.forEach(t => cards += `<div class="grid-card">${t.imagen ? `<img src="${t.imagen}" style="width:50px; margin-bottom:15px;">`:''}<h3>${t.titulo}</h3>${t.precio ? `<span class="price-tag">${t.precio}</span>`:''}<p>${t.texto}</p></div>`);
+                body += `<section><h2>${s.titulo}</h2><div class="bunker-grid-container">${cards}</div></section>`;
             }
         });
-        document.getElementById('vistaPrevia').srcdoc = headBase + content + `</body></html>`;
+        document.getElementById('vistaPrevia').srcdoc = headBase + body + `</body></html>`;
     }
 
     function generarCodigoGitHub() { document.getElementById('githubOutput').innerText = document.getElementById('vistaPrevia').srcdoc; document.getElementById('codeWrapper').style.display='block'; }
-    function copiarAlPortapapeles() { navigator.clipboard.writeText(document.getElementById('githubOutput').innerText); alert('Copiado al portapapeles'); }
-    function setDevice(t) { document.getElementById('vistaPrevia').className = (t==='mobile') ? 'mobile-view' : ''; }
+    function copiarAlPortapapeles() { navigator.clipboard.writeText(document.getElementById('githubOutput').innerText); alert('¡Copiado!'); }
 </script>
 </body>
 </html>
