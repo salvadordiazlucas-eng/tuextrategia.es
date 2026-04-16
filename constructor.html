@@ -77,3 +77,172 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Constructor Maestro V3.2 | Puliendo Ideas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; }
+        body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* UI Estructura */
+        .sidebar { width: 450px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .preview { flex-grow: 1; background: #111; display: flex; flex-direction: column; position: relative; }
+        
+        /* Controles */
+        .device-toggle { background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 10px; }
+        .btn-device { background: #334155; border: none; color: white; padding: 5px 15px; border-radius: 4px; cursor: pointer; }
+        .btn-device.active { background: var(--cobalto); }
+
+        iframe { width: 100%; height: 100%; border: none; background: var(--noche); margin: 0 auto; transition: all 0.3s; }
+        .mobile-view { width: 375px; height: 667px; border: 12px solid #333; border-radius: 30px; margin: 20px auto; }
+
+        /* Tarjetas de Edición */
+        .modulo-card { background: var(--pizarra); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--cobalto); position: relative; }
+        .controls-pos { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .btn-pos { background: #0f172a; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 4px; padding: 2px 8px; font-size: 10px; }
+
+        input, textarea { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; margin-top: 8px; box-sizing: border-box; font-family: 'Inter'; }
+        
+        .btn-main { background: var(--cobalto); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        .btn-add { background: transparent; border: 1px dashed var(--cobalto); color: var(--cobalto); margin: 10px 0 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2 style="margin-top:0">Constructor Maestro V3.2</h2>
+    
+    <div id="importArea">
+        <label style="font-size: 11px; color: #94a3b8;">IMPORTAR CÓDIGO HTML:</label>
+        <textarea id="rawInput" style="height: 100px; font-size: 10px;" placeholder="Pega aquí el código de tu index.html..."></textarea>
+        <button class="btn-main" style="background:#475569; font-size:12px;" onclick="importarHTML()">Analizar Estructura</button>
+    </div>
+
+    <hr style="opacity: 0.1; margin: 20px 0;">
+    
+    <button class="btn-main btn-add" onclick="añadirNuevo()">+ Añadir Módulo Manual</button>
+    
+    <div id="editorInputs"></div>
+
+    <button class="btn-main" style="background: var(--success); margin-top: 20px;" onclick="descargarHTML()">Descargar Web Final</button>
+</div>
+
+<div class="preview">
+    <div class="device-toggle">
+        <button class="btn-device active" onclick="setDevice('pc', this)">💻 Computador</button>
+        <button class="btn-device" onclick="setDevice('mobile', this)">📱 Móvil</button>
+    </div>
+    <iframe id="vistaPrevia"></iframe>
+</div>
+
+<script>
+    let modulos = [];
+    
+    // Base visual con los estilos REALES de Puliendo Ideas
+    const htmlBase = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            body { margin:0; font-family:'Inter', sans-serif; background:#020617; color:white; line-height:1.6; text-align:center; }
+            section { padding: 80px 20px; display:flex; flex-direction:column; align-items:center; border-bottom:1px solid rgba(255,255,255,0.05); }
+            h1 { font-size: 2.5rem; margin: 20px 0; letter-spacing:-2px; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+            p { color:#94a3b8; max-width:600px; font-size:1.1rem; }
+            img { max-width: 250px; height: auto; filter: drop-shadow(0 0 20px rgba(0, 114, 255, 0.2)); }
+            @media (max-width: 768px) { h1 { font-size: 1.8rem; } section { padding: 50px 20px; } }
+        </style>
+    </head>
+    <body><div id="app"></div></body></html>`;
+
+    function importarHTML() {
+        const raw = document.getElementById('rawInput').value;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(raw, 'text/html');
+        const elements = doc.querySelectorAll('section, header, .service-card');
+        
+        modulos = [];
+        elements.forEach((el, i) => {
+            const titulo = el.querySelector('h1, h2, h3')?.innerText || "";
+            const texto = el.querySelector('p')?.innerText || "";
+            const imagen = el.querySelector('img')?.getAttribute('src') || "";
+            if(titulo || texto) modulos.push({ titulo, texto, imagen });
+        });
+        renderUI();
+    }
+
+    function añadirNuevo() {
+        modulos.push({ titulo: "Nuevo Título", texto: "Descripción aquí...", imagen: "logo.png" });
+        renderUI();
+    }
+
+    function renderUI() {
+        const container = document.getElementById('editorInputs');
+        container.innerHTML = '';
+        let contentHtml = '';
+
+        modulos.forEach((m, i) => {
+            const card = document.createElement('div');
+            card.className = 'modulo-card';
+            card.innerHTML = `
+                <div class="controls-pos">
+                    <button class="btn-pos" onclick="mover(${i},-1)">▲</button>
+                    <button class="btn-pos" onclick="mover(${i},1)">▼</button>
+                    <button class="btn-pos" style="color:#ff4444" onclick="eliminar(${i})">✕</button>
+                </div>
+                <input type="text" value="${m.titulo}" oninput="modulos[${i}].titulo=this.value; updateVp()">
+                <textarea oninput="modulos[${i}].texto=this.value; updateVp()">${m.texto}</textarea>
+                <input type="text" value="${m.imagen}" placeholder="Ruta imagen" oninput="modulos[${i}].imagen=this.value; updateVp()">
+            `;
+            container.appendChild(card);
+            
+            contentHtml += `<section>
+                ${m.imagen ? `<img src="${m.imagen}">` : ''}
+                <h1>${m.titulo}</h1>
+                <p>${m.texto}</p>
+            </section>`;
+        });
+        window.tempContent = contentHtml;
+        updateVp();
+    }
+
+    function updateVp() {
+        let finalContent = '';
+        modulos.forEach(m => {
+            finalContent += `<section>
+                ${m.imagen ? `<img src="${m.imagen}">` : ''}
+                <h1>${m.titulo}</h1>
+                <p>${m.texto}</p>
+            </section>`;
+        });
+        const iframe = document.getElementById('vistaPrevia');
+        iframe.srcdoc = htmlBase.replace('<div id="app"></div>', `<div id="app">${finalContent}</div>`);
+    }
+
+    function mover(i, d) {
+        const n = i + d;
+        if(n>=0 && n<modulos.length) { [modulos[i], modulos[n]] = [modulos[n], modulos[i]]; renderUI(); }
+    }
+
+    function eliminar(i) { modulos.splice(i,1); renderUI(); }
+    function setDevice(t, b) {
+        const f = document.getElementById('vistaPrevia');
+        document.querySelectorAll('.btn-device').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        f.className = (t==='mobile') ? 'mobile-view' : '';
+    }
+    function descargarHTML() {
+        const iframe = document.getElementById('vistaPrevia');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([iframe.srcdoc], {type:'text/html'}));
+        a.download = 'web-puliendo-ideas.html';
+        a.click();
+    }
+</script>
+</body>
+</html>
