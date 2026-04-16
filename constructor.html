@@ -2,20 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Búnker V4.8 | Control de Escala y Alineación</title>
+    <title>Búnker V4.9 | Consola Estratégica Integral</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --accent: #00d4ff; }
+        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --accent: #00d4ff; --warning: #f59e0b; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        .sidebar { width: 650px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .sidebar { width: 700px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .modulo-card { background: var(--pizarra); padding: 20px; border-radius: 16px; margin-bottom: 25px; border-left: 5px solid var(--cobalto); position: relative; }
         
         .controls-top { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; }
         .btn-mini { background: #0b1120; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 6px; padding: 5px 10px; font-size: 12px; }
 
         .toolbar { display: flex; gap: 8px; margin: 10px 0 5px; background: #0b1120; padding: 6px; border-radius: 8px; border: 1px solid #334155; align-items: center; flex-wrap: wrap; }
-        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
         
         .size-tool { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--accent); font-weight: bold; background: #1e293b; padding: 2px 8px; border-radius: 4px; border: 1px solid #475569; }
         .size-tool input { width: 50px !important; margin: 0 !important; height: auto !important; cursor: pointer; }
@@ -23,9 +23,11 @@
         .align-select { background: var(--cobalto); color: white; border: none; font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: auto; }
         
         .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 8px; min-height: 80px; font-size: 14px; outline: none; line-height: 1.6; }
-        input { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 10px; border-radius: 8px; margin-top: 8px; box-sizing: border-box; }
+        input { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 10px; border-radius: 8px; margin-top: 8px; box-sizing: border-box; font-size: 13px; }
         
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
         .btn-main { background: var(--cobalto); color: white; border: none; padding: 16px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px; text-transform: uppercase; }
+        
         .preview { flex-grow: 1; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
         .label-sm { font-size: 10px; color: var(--accent); font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
@@ -34,11 +36,11 @@
 <body>
 
 <div class="sidebar">
-    <h2 style="margin:0 0 15px 0;">Búnker V4.8</h2>
+    <h2 style="margin:0 0 15px 0; letter-spacing:-1px;">Búnker V4.9 <span style="font-size:11px; opacity:0.6;">(Configuración Total)</span></h2>
     
     <div style="background:#000; padding:15px; border-radius:12px; border:1px solid var(--cobalto); margin-bottom:25px;">
-        <textarea id="rawInput" style="width:100%; height:60px; background:transparent; color:#00ff88; border:none; font-family:monospace; font-size:11px; outline:none;" placeholder="Pega aquí el código publicado..."></textarea>
-        <button class="btn-main" style="background:#334155; padding:10px; font-size:11px;" onclick="importarSistemico()">SINCRONIZAR ESTRUCTURA</button>
+        <textarea id="rawInput" style="width:100%; height:50px; background:transparent; color:#00ff88; border:none; font-family:monospace; font-size:11px; outline:none;" placeholder="Pega el código actual aquí..."></textarea>
+        <button class="btn-main" style="background:#334155; padding:10px; font-size:11px;" onclick="importarSistemico()">SINCRONIZAR PROYECTO</button>
     </div>
 
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -48,8 +50,8 @@
 
     <div id="editorInputs" style="margin-top:20px;"></div>
 
-    <button class="btn-main" style="background: var(--success); font-size: 18px;" onclick="generarFinal()">GENERAR CÓDIGO FINAL</button>
-    <div id="codeWrapper" style="display:none; margin-top:20px;"><pre id="githubOutput" style="background:#000; color:#00ff88; padding:20px; font-size:11px; border-radius:12px; overflow-x:auto;"></pre></div>
+    <button class="btn-main" style="background: var(--success); font-size: 18px; height: 65px;" onclick="generarFinal()">GENERAR CÓDIGO FINAL</button>
+    <div id="codeWrapper" style="display:none; margin-top:20px;"><pre id="githubOutput" style="background:#000; color:#00ff88; padding:20px; font-size:11px; border-radius:12px; overflow-x:auto; border:1px solid var(--success);"></pre></div>
 </div>
 
 <div class="preview"><iframe id="vistaPrevia"></iframe></div>
@@ -59,8 +61,8 @@
     const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;}section{padding:80px 24px;max-width:1100px;margin:0 auto;}.hero{min-height:90vh;display:flex;flex-direction:column;background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);justify-content:center;}.logo-img{width:100%;max-width:250px;margin-bottom:20px;display:inline-block;}h1{font-weight:700;margin:15px 0;letter-spacing:-2px;background:linear-gradient(to bottom,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}.sub{color:var(--text-muted);margin-bottom:30px;display:inline-block;}.cta-btn{display:inline-block;width:100%;max-width:350px;padding:18px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:14px;text-transform:uppercase;}.service-card{background:var(--card-bg);border:1px solid var(--border);border-radius:28px;margin-bottom:40px;overflow:hidden;}.visual-container img{width:100%;display:block;}.service-content-pro{padding:35px;}.service-tag{color:var(--accent);font-weight:700;font-size:12px;text-transform:uppercase;display:block;margin-bottom:12px;}.price-amount{font-weight:700;}.service-footer{display:flex;justify-content:space-between;align-items:center;padding-top:25px;border-top:1px solid var(--border);margin-top:20px;}.btn-small{padding:12px 24px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:10px;}</style></head><body>`;
 
     function añadir(tipo) {
-        if(tipo === 'hero') secciones.push({ tipo: 'hero', h1: 'Título', h1Size: 60, sub: 'Descripción...', subSize: 20, img: 'logo.png', btnT: 'Acción', btnL: '#', align: 'center' });
-        else secciones.push({ tipo: 'card', tag: 'Intervención', h3: 'Servicio', h3Size: 32, p: 'Descripción...', pSize: 16, img: 'google-presencia.png', precio: '499€', prSize: 35, btnT: 'Iniciar', btnL: '#', align: 'left' });
+        if(tipo === 'hero') secciones.push({ tipo: 'hero', h1: 'Título', h1Size: 60, sub: 'Subtítulo estratégico...', subSize: 20, img: 'logo.png', btnT: 'Diagnóstico Gratis', btnL: 'contacto.html', align: 'center' });
+        else secciones.push({ tipo: 'card', tag: 'Intervención', h3: 'Servicio', h3Size: 32, p: 'Descripción del valor...', pSize: 16, img: 'google-presencia.png', precio: '499€', prSize: 35, btnT: 'Contratar', btnL: 'pago.html', align: 'left' });
         render();
     }
 
@@ -78,11 +80,11 @@
         secciones = [];
         const hero = doc.querySelector('.hero');
         if(hero) {
-            secciones.push({ tipo: 'hero', h1: hero.querySelector('h1')?.innerText || '', h1Size: 60, sub: hero.querySelector('.sub')?.innerHTML || '', subSize: 20, img: hero.querySelector('img')?.src || '', btnT: hero.querySelector('.cta-btn')?.innerText || '', btnL: hero.querySelector('.cta-btn')?.getAttribute('href') || '#', align: hero.style.textAlign || 'center' });
+            secciones.push({ tipo: 'hero', h1: hero.querySelector('h1')?.innerText || '', h1Size: 60, sub: hero.querySelector('.sub')?.innerHTML || '', subSize: 20, img: hero.querySelector('img')?.src || '', btnT: hero.querySelector('.cta-btn')?.innerText || 'Acción', btnL: hero.querySelector('.cta-btn')?.getAttribute('href') || '#', align: hero.style.textAlign || 'center' });
         }
         doc.querySelectorAll('.service-card').forEach(c => {
             const content = c.querySelector('.service-content-pro');
-            secciones.push({ tipo: 'card', tag: c.querySelector('.service-tag')?.innerText || '', h3: c.querySelector('h3')?.innerText || '', h3Size: 32, p: c.querySelector('p')?.innerHTML || '', pSize: 16, img: c.querySelector('img')?.src || '', precio: c.querySelector('.price-amount')?.innerText || '', prSize: 35, btnT: c.querySelector('.btn-small')?.innerText || '', btnL: c.querySelector('.btn-small')?.getAttribute('href') || '#', align: content?.style.textAlign || 'left' });
+            secciones.push({ tipo: 'card', tag: c.querySelector('.service-tag')?.innerText || '', h3: c.querySelector('h3')?.innerText || '', h3Size: 32, p: c.querySelector('p')?.innerHTML || '', pSize: 16, img: c.querySelector('img')?.src || '', precio: c.querySelector('.price-amount')?.innerText || '', prSize: 35, btnT: c.querySelector('.btn-small')?.innerText || 'Botón', btnL: c.querySelector('.btn-small')?.getAttribute('href') || '#', align: content?.style.textAlign || 'left' });
         });
         render();
     }
@@ -100,20 +102,31 @@
             </select>`;
 
             if(s.tipo === 'hero') {
-                h += `<span class="label-sm">Bloque Hero</span>
+                h += `<span class="label-sm">Bloque Hero Principal</span>
                 <div class="toolbar"><div class="size-tool">TÍTULO: <input type="range" min="20" max="100" value="${s.h1Size}" oninput="secciones[${i}].h1Size=this.value;up()"></div> <div class="size-tool">TEXTO: <input type="range" min="12" max="40" value="${s.subSize}" oninput="secciones[${i}].subSize=this.value;up()"></div> ${alignHtml}</div>
-                <input type="text" value="${s.h1}" oninput="secciones[${i}].h1=this.value;up()">
-                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button><button class="btn-tool" onclick="document.execCommand('insertParagraph')">¶</button></div>
+                <input type="text" value="${s.h1}" placeholder="Título Principal" oninput="secciones[${i}].h1=this.value;up()">
+                <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button></div>
                 <div class="rich-editor" contenteditable="true" oninput="secciones[${i}].sub=this.innerHTML;up()">${s.sub}</div>
-                <input type="text" value="${s.img}" placeholder="Logo URL" oninput="secciones[${i}].img=this.value;up()">`;
+                <div class="grid-inputs">
+                    <input type="text" value="${s.btnT}" placeholder="Texto Botón" oninput="secciones[${i}].btnT=this.value;up()">
+                    <input type="text" value="${s.btnL}" placeholder="URL Botón" oninput="secciones[${i}].btnL=this.value;up()">
+                </div>
+                <input type="text" value="${s.img}" placeholder="URL del Logotipo" oninput="secciones[${i}].img=this.value;up()" style="margin-top:10px;">`;
             } else {
-                h += `<span class="label-sm">Tarjeta</span>
+                h += `<span class="label-sm">Tarjeta de Servicio</span>
                 <div class="toolbar"><div class="size-tool">TÍTULO: <input type="range" min="18" max="60" value="${s.h3Size}" oninput="secciones[${i}].h3Size=this.value;up()"></div> <div class="size-tool">TEXTO: <input type="range" min="10" max="30" value="${s.pSize}" oninput="secciones[${i}].pSize=this.value;up()"></div> ${alignHtml}</div>
-                <input type="text" value="${s.h3}" oninput="secciones[${i}].h3=this.value;up()">
+                <input type="text" value="${s.h3}" placeholder="Título Servicio" oninput="secciones[${i}].h3=this.value;up()">
                 <div class="toolbar"><button class="btn-tool" onclick="document.execCommand('bold')">B</button><div class="size-tool">PRECIO: <input type="range" min="20" max="60" value="${s.prSize}" oninput="secciones[${i}].prSize=this.value;up()"></div></div>
                 <div class="rich-editor" style="min-height:60px;" contenteditable="true" oninput="secciones[${i}].p=this.innerHTML;up()">${s.p}</div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"><input type="text" value="${s.tag}" oninput="secciones[${i}].tag=this.value;up()"><input type="text" value="${s.precio}" oninput="secciones[${i}].precio=this.value;up()"></div>
-                <input type="text" value="${s.img}" placeholder="Imagen URL" oninput="secciones[${i}].img=this.value;up()">`;
+                <div class="grid-inputs">
+                    <input type="text" value="${s.btnT}" placeholder="Texto Botón" oninput="secciones[${i}].btnT=this.value;up()">
+                    <input type="text" value="${s.btnL}" placeholder="URL Botón" oninput="secciones[${i}].btnL=this.value;up()">
+                </div>
+                <div class="grid-inputs">
+                    <input type="text" value="${s.tag}" placeholder="Etiqueta" oninput="secciones[${i}].tag=this.value;up()">
+                    <input type="text" value="${s.precio}" placeholder="Precio" oninput="secciones[${i}].precio=this.value;up()">
+                </div>
+                <input type="text" value="${s.img}" placeholder="URL Imagen Servicio" oninput="secciones[${i}].img=this.value;up()" style="margin-top:10px;">`;
             }
             div.innerHTML = h; c.appendChild(div);
         });
