@@ -2,165 +2,156 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Constructor Maestro V4.0 | Edición Total & SEO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>Constructor Maestro V4.2 | Búnker Definitivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        .sidebar { width: 550px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .sidebar { width: 580px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .preview { flex-grow: 1; background: #111; display: flex; flex-direction: column; position: relative; }
         
-        /* SEO & Herramientas */
+        /* SEO Panel */
         .seo-panel { background: rgba(0, 114, 255, 0.05); border: 1px solid var(--cobalto); padding: 12px; border-radius: 10px; margin-bottom: 15px; font-size: 11px; }
-        .seo-item { display: flex; justify-content: space-between; margin-bottom: 3px; }
         
         /* Módulos */
-        .modulo-card { background: var(--pizarra); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--cobalto); position: relative; }
-        .controls-top { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
-        .btn-mini { background: #0f172a; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 4px; padding: 2px 6px; font-size: 10px; }
+        .modulo-card { background: var(--pizarra); padding: 18px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid var(--cobalto); position: relative; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        .controls-top { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 10; }
+        .btn-mini { background: #0f172a; border: 1px solid #334155; color: white; cursor: pointer; border-radius: 4px; padding: 3px 7px; font-size: 10px; font-weight: bold; }
         .btn-mini:hover { background: var(--cobalto); }
 
-        /* Rich Editor Toolbar */
-        .toolbar { display: flex; gap: 4px; margin-top: 10px; background: #0f172a; padding: 5px; border-radius: 6px; border: 1px solid #334155; }
-        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 3px 8px; border-radius: 3px; cursor: pointer; font-size: 10px; font-weight: bold; }
+        /* Toolbars */
+        .toolbar { display: flex; gap: 5px; margin: 10px 0; background: #0f172a; padding: 6px; border-radius: 6px; border: 1px solid #334155; }
+        .btn-tool { background: #1e293b; border: 1px solid #475569; color: white; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
         .btn-tool:hover { background: var(--cobalto); }
 
-        .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; margin-top: 5px; min-height: 80px; font-size: 14px; outline: none; line-height: 1.5; }
+        .rich-editor { width: 100%; background: #0b1120; border: 1px solid #334155; color: white; padding: 12px; border-radius: 6px; margin-top: 5px; min-height: 80px; font-size: 14px; outline: none; line-height: 1.6; }
         
-        input { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; margin-top: 5px; box-sizing: border-box; font-size: 12px; }
-        .btn-main { background: var(--cobalto); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-        
-        /* Preview area */
-        .code-container { position: relative; margin-top: 15px; display: none; }
-        #githubOutput { background: #000; color: #00ff88; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 11px; border: 1px solid var(--success); max-height: 150px; overflow-y: auto; white-space: pre-wrap; }
-        .btn-copy { position: absolute; top: 10px; right: 10px; background: var(--success); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        input, select { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 10px; border-radius: 6px; margin-top: 6px; box-sizing: border-box; font-size: 12px; }
+        .btn-main { background: var(--cobalto); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 12px; }
+
+        /* Grid Editor */
+        .grid-item-editor { background: rgba(255,255,255,0.03); border: 1px dashed #444; padding: 15px; margin-top: 15px; border-radius: 10px; }
+
+        /* Output */
+        .code-container { position: relative; margin-top: 20px; display: none; }
+        #githubOutput { background: #000; color: #00ff88; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 11px; border: 1px solid var(--success); max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        .btn-copy { position: absolute; top: 10px; right: 10px; background: var(--success); color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
         iframe { width: 100%; height: 100%; border: none; background: var(--noche); }
-        .mobile-view { width: 375px; height: 667px; border: 10px solid #333; border-radius: 25px; margin: 20px auto; }
-        .label-sm { font-size: 9px; color: var(--cobalto); font-weight: bold; text-transform: uppercase; display: block; margin-top: 8px; }
+        .mobile-view { width: 375px; height: 667px; border: 12px solid #333; border-radius: 30px; margin: 20px auto; }
+        .label-sm { font-size: 10px; color: var(--cobalto); font-weight: bold; text-transform: uppercase; display: block; margin-top: 10px; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2 style="margin:0 0 10px 0; font-size: 18px;">Constructor V4.0 Omni</h2>
+    <h2 style="margin:0 0 10px 0;">Constructor Búnker V4.2</h2>
     
-    <div class="seo-panel" id="seoMetrics">Auditoría SEO activa...</div>
+    <div class="seo-panel" id="seoMetrics">Analizando métricas SEO...</div>
 
-    <div id="importArea">
-        <textarea id="rawInput" style="height: 40px; width:100%; background:#000; color:#fff; border:1px solid #334155; border-radius:6px; font-size:10px; padding:5px;" placeholder="Pega el código aquí para editar..."></textarea>
-        <button class="btn-main" style="background:#475569; padding:8px; font-size:11px;" onclick="importarHTML()">Cargar y Analizar</button>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom: 20px;">
+        <button class="btn-main" style="margin-top:0;" onclick="añadirSeccion('hero')">+ Nuevo Hero</button>
+        <button class="btn-main" style="margin-top:0; background:var(--warning); color:black;" onclick="añadirSeccion('grid')">+ Nueva Cuadrícula</button>
     </div>
 
-    <button class="btn-main" style="background:transparent; border:1px dashed var(--cobalto); color:var(--cobalto); margin-top:15px;" onclick="añadirNuevo()">+ Añadir Nuevo Módulo</button>
+    <div id="editorInputs"></div>
 
-    <div id="editorInputs" style="margin-top:20px;"></div>
-
-    <button class="btn-main" style="background: var(--success);" onclick="generarCodigoGitHub()">Generar Código Web</button>
+    <button class="btn-main" style="background: var(--success); font-size: 16px; padding: 18px;" onclick="generarCodigoGitHub()">GENERAR CÓDIGO FINAL</button>
     
     <div class="code-container" id="codeWrapper">
-        <button class="btn-copy" id="btnCopy" onclick="copiarAlPortapapeles()">COPIAR</button>
+        <button class="btn-copy" id="btnCopy" onclick="copiarAlPortapapeles()">COPIAR AL PORTAPAPELES</button>
         <pre id="githubOutput"></pre>
     </div>
 </div>
 
 <div class="preview">
-    <div style="background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 15px;">
-        <button onclick="setDevice('pc')" style="cursor:pointer; background:none; border:none; color:white;">💻 Desktop</button>
-        <button onclick="setDevice('mobile')" style="cursor:pointer; background:none; border:none; color:white;">📱 Mobile</button>
+    <div style="background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 20px;">
+        <button onclick="setDevice('pc')" style="cursor:pointer; background:none; border:none; color:white; font-weight:bold;">💻 MODO DESKTOP</button>
+        <button onclick="setDevice('mobile')" style="cursor:pointer; background:none; border:none; color:white; font-weight:bold;">📱 MODO MÓVIL</button>
     </div>
     <iframe id="vistaPrevia"></iframe>
 </div>
 
 <script>
-    let modulos = [];
-    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;text-align:center;}section{padding:100px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}.hero{background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);min-height:90vh;justify-content:center;}.logo-img{width:100%;max-width:280px;filter:drop-shadow(0 0 20px rgba(0,114,255,0.2));margin-bottom:30px;}h1{font-size:clamp(32px, 8vw, 65px);margin:20px 0;letter-spacing:-3px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}h3{font-size:2rem;margin-bottom:15px;}.sub{color:var(--text-muted);font-size:1.2rem;max-width:700px;margin:0 auto 30px auto;}.service-card{background:var(--card-bg);border:1px solid var(--border);border-radius:32px;padding:40px;max-width:950px;margin:20px auto;transition:var(--transition);}.cta-btn, .btn-small{display:inline-block;padding:18px 35px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:15px;box-shadow:0 10px 30px rgba(0,114,255,0.3);text-transform:uppercase;letter-spacing:1px;}.price-amount{font-size:35px;font-weight:700;display:block;}.whatsapp-float{position:fixed;bottom:30px;right:30px;width:65px;z-index:1000;}@media(max-width:768px){section{padding:60px 20px;}}</style></head><body>`;
+    let secciones = [];
+    const headBase = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"><style>:root{--primary:#0072ff;--bg:#020617;--card-bg:rgba(255,255,255,0.02);--accent:#00d4ff;--text-muted:#94a3b8;--border:rgba(255,255,255,0.08);--transition:all 0.5s cubic-bezier(0.16,1,0.3,1);}body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:white;line-height:1.6;text-align:center;}section{padding:100px 20px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);}.hero{background:radial-gradient(circle at center, #1e293b 0%, #020617 100%);min-height:85vh;justify-content:center;}.logo-img{width:100%;max-width:280px;filter:drop-shadow(0 0 20px rgba(0,114,255,0.2));margin-bottom:30px;}h1{font-size:clamp(35px, 8vw, 65px);margin:20px 0;letter-spacing:-3px;background:linear-gradient(to bottom, #fff, #94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;}h2{font-size:3rem;margin-bottom:20px;}.sub{color:var(--text-muted);font-size:1.3rem;max-width:750px;margin:0 auto 35px auto;}.cta-btn, .btn-small{display:inline-block;padding:20px 45px;background:var(--primary);color:white!important;text-decoration:none;font-weight:700;border-radius:18px;box-shadow:0 10px 35px rgba(0,114,255,0.3);text-transform:uppercase;letter-spacing:1px;transition:0.3s;}.cta-btn:hover{transform:translateY(-5px);}.bunker-grid-container{width:100%;max-width:1150px;margin:40px auto 0;display:grid;grid-template-columns:repeat(2,1fr);gap:35px;text-align:left;}.grid-card{background:var(--card-bg);border:1px solid var(--border);border-radius:32px;padding:40px;display:flex;flex-direction:column;gap:15px;transition:var(--transition);}.grid-card:hover{border-color:var(--primary);background:rgba(0,114,255,0.03);}.grid-card img{width:60px;height:auto;filter:drop-shadow(0 0 10px var(--primary));}h3{font-size:1.8rem;margin:5px 0;}.grid-card p{color:var(--text-muted);font-size:1.1rem;margin:0;}.whatsapp-float{position:fixed;bottom:30px;right:30px;width:65px;z-index:1000;}@media(max-width:991px){.bunker-grid-container{grid-template-columns:1fr;padding:0 10px;}}</style></head><body>`;
 
-    function añadirNuevo() {
-        modulos.push({ tipo: 'card', titulo: 'Nuevo Título', texto: 'Contenido...', imagen: '', precio: '', btnText: 'Saber más', btnLink: '#', align: 'center' });
-        renderUI();
-    }
-
-    function importarHTML() {
-        const raw = document.getElementById('rawInput').value;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(raw, 'text/html');
-        const sections = doc.querySelectorAll('section, .service-card');
-        modulos = [];
-        sections.forEach((s) => {
-            const btn = s.querySelector('a.cta-btn, a.btn-small');
-            modulos.push({
-                tipo: s.classList.contains('hero') ? 'hero' : 'card',
-                titulo: s.querySelector('h1, h2, h3')?.innerText || "",
-                texto: s.querySelector('.sub, p, div:not(.service-footer)')?.innerHTML || "",
-                imagen: s.querySelector('img')?.getAttribute('src') || "",
-                precio: s.querySelector('.price-amount')?.innerText || "",
-                btnText: btn?.innerText || "",
-                btnLink: btn?.getAttribute('href') || "#",
-                align: s.style.textAlign || 'center'
-            });
-        });
+    function añadirSeccion(tipo) {
+        if(tipo === 'hero') {
+            secciones.push({ tipo: 'hero', titulo: 'Título Estratégico', texto: 'Descripción del proyecto...', imagen: 'logo.png', btnText: 'Acción', btnLink: '#', align: 'center' });
+        } else {
+            secciones.push({ tipo: 'grid', titulo: 'Nuestros Servicios', tarjetas: [{ titulo: 'Servicio 1', texto: 'Detalle...', imagen: '' }] });
+        }
         renderUI();
     }
 
     function renderUI() {
         const container = document.getElementById('editorInputs');
         container.innerHTML = '';
-        modulos.forEach((m, i) => {
+        secciones.forEach((s, iS) => {
             const card = document.createElement('div');
             card.className = 'modulo-card';
-            card.innerHTML = `
-                <div class="controls-top">
-                    <button class="btn-mini" onclick="mover(${i},-1)">▲</button>
-                    <button class="btn-mini" onclick="mover(${i},1)">▼</button>
-                    <button class="btn-mini" style="color:var(--danger)" onclick="eliminar(${i})">✕</button>
-                </div>
-                <span class="label-sm">Módulo ${i+1} - ${m.tipo}</span>
-                <input type="text" value="${m.titulo}" oninput="modulos[${i}].titulo=this.value; updateVp()">
-                
-                <div class="toolbar">
-                    <button class="btn-tool" onclick="ejecutar('bold')">B</button>
-                    <button class="btn-tool" onclick="setAlign(${i},'left')">⬅</button>
-                    <button class="btn-tool" onclick="setAlign(${i},'center')">⬛</button>
-                    <button class="btn-tool" onclick="setAlign(${i},'right')">➡</button>
-                </div>
-                <div class="rich-editor" contenteditable="true" style="text-align:${m.align}" oninput="modulos[${i}].texto=this.innerHTML; updateVp()">${m.texto}</div>
-                
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-                    <input type="text" value="${m.imagen}" placeholder="Imagen URL" oninput="modulos[${i}].imagen=this.value; updateVp()">
-                    <input type="text" value="${m.precio}" placeholder="Precio" oninput="modulos[${i}].precio=this.value; updateVp()">
-                </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-                    <input type="text" value="${m.btnText}" placeholder="Texto Botón" oninput="modulos[${i}].btnText=this.value; updateVp()">
-                    <input type="text" value="${m.btnLink}" placeholder="Link" oninput="modulos[${i}].btnLink=this.value; updateVp()">
-                </div>
-            `;
+            let innerHTML = `<div class="controls-top">
+                <button class="btn-mini" onclick="mover(${iS},-1)">▲</button>
+                <button class="btn-mini" onclick="mover(${iS},1)">▼</button>
+                <button class="btn-mini" style="color:var(--danger)" onclick="eliminar(${iS})">✕</button>
+            </div>`;
+
+            if(s.tipo === 'hero') {
+                innerHTML += `<span class="label-sm">BLOQUE HERO</span>
+                    <input type="text" value="${s.titulo}" oninput="secciones[${iS}].titulo=this.value; updateVp()">
+                    <div class="toolbar"><button class="btn-tool" onclick="ejecutar('bold')">B</button><button class="btn-tool" onclick="setAlign(${iS},'left')">⬅</button><button class="btn-tool" onclick="setAlign(${iS},'center')">⬛</button></div>
+                    <div class="rich-editor" contenteditable="true" style="text-align:${s.align}" oninput="secciones[${iS}].texto=this.innerHTML; updateVp()">${s.texto}</div>
+                    <input type="text" value="${s.imagen}" placeholder="URL Logo/Imagen" oninput="secciones[${iS}].imagen=this.value; updateVp()">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                        <input type="text" value="${s.btnText}" placeholder="Texto Botón" oninput="secciones[${iS}].btnText=this.value; updateVp()">
+                        <input type="text" value="${s.btnLink}" placeholder="Link Botón" oninput="secciones[${iS}].btnLink=this.value; updateVp()">
+                    </div>`;
+            } else {
+                innerHTML += `<span class="label-sm">CUADRÍCULA GRIAL</span>
+                    <input type="text" value="${s.titulo}" placeholder="Título Sección" oninput="secciones[${iS}].titulo=this.value; updateVp()">`;
+                s.tarjetas.forEach((t, iT) => {
+                    innerHTML += `<div class="grid-item-editor">
+                        <div style="text-align:right"><button class="btn-mini" style="color:var(--danger)" onclick="eliminarTarjeta(${iS},${iT})">✕ Quitar Tarjeta</button></div>
+                        <input type="text" value="${t.titulo}" placeholder="Título Tarjeta" oninput="secciones[${iS}].tarjetas[${iT}].titulo=this.value; updateVp()">
+                        <textarea style="width:100%; margin-top:5px; background:#0b1120; color:white; border:1px solid #334155; padding:8px; border-radius:6px; font-family:inherit;" oninput="secciones[${iS}].tarjetas[${iT}].texto=this.value; updateVp()">${t.texto}</textarea>
+                        <input type="text" value="${t.imagen}" placeholder="URL Icono (PNG)" oninput="secciones[${iS}].tarjetas[${iT}].imagen=this.value; updateVp()">
+                    </div>`;
+                });
+                innerHTML += `<button class="btn-main" onclick="añadirTarjeta(${iS})">+ Añadir Nueva Tarjeta</button>`;
+            }
+            card.innerHTML = innerHTML;
             container.appendChild(card);
         });
         updateVp();
     }
 
     function ejecutar(cmd) { document.execCommand(cmd, false, null); }
-    function setAlign(i, a) { modulos[i].align = a; renderUI(); }
-    function mover(i, d) { let n = i+d; if(n>=0 && n<modulos.length) { [modulos[i], modulos[n]] = [modulos[n], modulos[i]]; renderUI(); } }
-    function eliminar(i) { if(confirm('¿Eliminar módulo?')) { modulos.splice(i,1); renderUI(); } }
+    function setAlign(i, a) { secciones[i].align = a; renderUI(); }
+    function mover(i, d) { let n = i+d; if(n>=0 && n<secciones.length) { [secciones[i], secciones[n]] = [secciones[n], secciones[i]]; renderUI(); } }
+    function eliminar(i) { if(confirm('¿Borrar sección?')) { secciones.splice(i,1); renderUI(); } }
+    function añadirTarjeta(i) { secciones[i].tarjetas.push({ titulo: 'Nuevo Item', texto: 'Descripción...', imagen: '' }); renderUI(); }
+    function eliminarTarjeta(iS, iT) { secciones[iS].tarjetas.splice(iT,1); renderUI(); }
 
     function updateVp() {
         let bodyContent = '';
-        let wordCount = 0;
-        modulos.forEach((m, i) => {
-            const tag = i === 0 ? 'h1' : 'h3';
-            wordCount += m.texto.replace(/<[^>]*>/g, '').split(' ').filter(w => w.length > 0).length;
-            if(m.tipo === 'hero') {
-                bodyContent += `<section class="hero" style="text-align:${m.align}"><img src="${m.imagen}" class="logo-img" alt="${m.titulo}"><${tag}>${m.titulo}</${tag}><div class="sub">${m.texto}</div>${m.btnText ? `<a href="${m.btnLink}" class="cta-btn">${m.btnText}</a>` : ''}</section>`;
+        let totalWords = 0;
+        secciones.forEach((s) => {
+            if(s.tipo === 'hero') {
+                totalWords += s.texto.split(' ').length;
+                bodyContent += `<section class="hero" style="text-align:${s.align}"><img src="${s.imagen}" class="logo-img" alt="${s.titulo}"><h1>${s.titulo}</h1><div class="sub">${s.texto}</div>${s.btnText ? `<a href="${s.btnLink}" class="cta-btn">${s.btnText}</a>` : ''}</section>`;
             } else {
-                bodyContent += `<section><div class="service-card" style="text-align:${m.align}">${m.imagen ? `<img src="${m.imagen}" style="width:100%; border-radius:15px; margin-bottom:25px;" alt="${m.titulo}">` : ''}<h3>${m.titulo}</h3><div style="color:var(--text-muted); margin-bottom:25px;">${m.texto}</div><div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:25px;">${m.precio ? `<span class="price-amount">${m.precio}</span>` : ''}${m.btnText ? `<a href="${m.btnLink}" class="btn-small">${m.btnText}</a>` : ''}</div></div></section>`;
+                let gridHTML = '';
+                s.tarjetas.forEach(t => {
+                    gridHTML += `<div class="grid-card">${t.imagen ? `<img src="${t.imagen}" alt="${t.titulo}">` : ''}<h3>${t.titulo}</h3><p>${t.texto}</p></div>`;
+                });
+                bodyContent += `<section><h2>${s.titulo}</h2><div class="bunker-grid-container">${gridHTML}</div></section>`;
             }
         });
         bodyContent += `<a href="https://wa.me/34643344106" class="whatsapp-float"><img src="WhatsApp.png" style="width:100%"></a>`;
         document.getElementById('vistaPrevia').srcdoc = headBase + bodyContent + `</body></html>`;
-        document.getElementById('seoMetrics').innerHTML = `Palabras: ${wordCount} | H1: ${modulos[0]?.titulo ? 'OK' : 'Falta'} | Imágenes: ${modulos.filter(m=>m.imagen).length}`;
+        document.getElementById('seoMetrics').innerHTML = `Palabras: ${totalWords} | Secciones: ${secciones.length} | Estado: ${totalWords > 200 ? 'SEO OK' : 'SEO Pobre'}`;
     }
 
     function generarCodigoGitHub() {
@@ -171,8 +162,9 @@
     function copiarAlPortapapeles() {
         navigator.clipboard.writeText(document.getElementById('githubOutput').innerText).then(() => {
             const btn = document.getElementById('btnCopy');
-            btn.innerText = '¡LISTO!';
-            setTimeout(() => btn.innerText = 'COPIAR', 2000);
+            btn.innerText = '¡CÓDIGO COPIADO!';
+            btn.style.background = '#0072ff';
+            setTimeout(() => { btn.innerText = 'COPIAR AL PORTAPAPELES'; btn.style.background = '#10b981'; }, 2000);
         });
     }
 
