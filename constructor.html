@@ -2,23 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Constructor Maestro V3.2 | Puliendo Ideas</title>
+    <title>Constructor Maestro V3.3 | Optimización SEO</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; }
+        :root { --cobalto: #0072ff; --noche: #020617; --pizarra: #1e293b; --texto: #f8fafc; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; }
         body { font-family: 'Inter', sans-serif; background: var(--noche); color: var(--texto); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
         /* UI Estructura */
         .sidebar { width: 450px; background: #0f172a; border-right: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 20px; overflow-y: auto; }
         .preview { flex-grow: 1; background: #111; display: flex; flex-direction: column; position: relative; }
         
-        /* Controles */
+        /* Controles de Dispositivo */
         .device-toggle { background: #1e293b; padding: 10px; display: flex; justify-content: center; gap: 10px; }
         .btn-device { background: #334155; border: none; color: white; padding: 5px 15px; border-radius: 4px; cursor: pointer; }
         .btn-device.active { background: var(--cobalto); }
 
         iframe { width: 100%; height: 100%; border: none; background: var(--noche); margin: 0 auto; transition: all 0.3s; }
         .mobile-view { width: 375px; height: 667px; border: 12px solid #333; border-radius: 30px; margin: 20px auto; }
+
+        /* Panel SEO */
+        #seoReport { background: rgba(0, 114, 255, 0.05); border: 1px solid rgba(0, 114, 255, 0.2); padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 12px; line-height: 1.5; }
+        .seo-item { margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .status-ok { color: var(--success); }
+        .status-warn { color: var(--warning); }
+        .status-bad { color: var(--danger); }
 
         /* Tarjetas de Edición */
         .modulo-card { background: var(--pizarra); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--cobalto); position: relative; }
@@ -34,12 +41,17 @@
 <body>
 
 <div class="sidebar">
-    <h2 style="margin-top:0">Constructor Maestro V3.2</h2>
+    <h2 style="margin-top:0">Constructor Maestro V3.3</h2>
     
     <div id="importArea">
         <label style="font-size: 11px; color: #94a3b8;">IMPORTAR CÓDIGO HTML:</label>
         <textarea id="rawInput" style="height: 100px; font-size: 10px;" placeholder="Pega aquí el código de tu index.html..."></textarea>
         <button class="btn-main" style="background:#475569; font-size:12px;" onclick="importarHTML()">Analizar Estructura</button>
+    </div>
+
+    <div id="seoReport">
+        <strong style="color:var(--cobalto)">DIAGNÓSTICO SEO:</strong><br>
+        <div id="seoStats" style="margin-top:8px;">Esperando datos...</div>
     </div>
 
     <hr style="opacity: 0.1; margin: 20px 0;">
@@ -73,6 +85,7 @@
             body { margin:0; font-family:'Inter', sans-serif; background:#020617; color:white; line-height:1.6; text-align:center; }
             section { padding: 80px 20px; display:flex; flex-direction:column; align-items:center; border-bottom:1px solid rgba(255,255,255,0.05); }
             h1 { font-size: 2.5rem; margin: 20px 0; letter-spacing:-2px; background: linear-gradient(to bottom, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+            h2 { font-size: 2rem; color: #fff; margin: 15px 0; }
             p { color:#94a3b8; max-width:600px; font-size:1.1rem; }
             img { max-width: 100%; width: 250px; height: auto; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0, 114, 255, 0.2)); border-radius: 8px; }
             @media (max-width: 768px) { h1 { font-size: 1.8rem; } section { padding: 50px 20px; } }
@@ -87,7 +100,7 @@
         const elements = doc.querySelectorAll('section, header, .service-card');
         
         modulos = [];
-        elements.forEach((el, i) => {
+        elements.forEach((el) => {
             const titulo = el.querySelector('h1, h2, h3')?.innerText || "";
             const texto = el.querySelector('p')?.innerText || "";
             const imagen = el.querySelector('img')?.getAttribute('src') || "";
@@ -99,6 +112,28 @@
     function añadirNuevo() {
         modulos.push({ titulo: "Nuevo Título", texto: "Descripción aquí...", imagen: "" });
         renderUI();
+    }
+
+    function analizarSEO() {
+        let h1Count = 0;
+        let imagesWithoutAlt = 0;
+        let totalWords = 0;
+
+        modulos.forEach((m, index) => {
+            if (index === 0 && m.titulo) h1Count++; 
+            else if (m.titulo) { /* Serían H2 */ }
+            
+            if (m.imagen && m.titulo === "") imagesWithoutAlt++;
+            totalWords += m.texto.trim().split(/\s+/).filter(w => w.length > 0).length;
+        });
+
+        const stats = document.getElementById('seoStats');
+        stats.innerHTML = `
+            <div class="seo-item">Jerarquía H1: <span class="${h1Count === 1 ? 'status-ok' : 'status-bad'}">${h1Count === 1 ? 'Correcta' : 'Falta o Exceso'}</span></div>
+            <div class="seo-item">Imágenes Claras: <span class="${imagesWithoutAlt === 0 ? 'status-ok' : 'status-warn'}">${imagesWithoutAlt === 0 ? 'Todas OK' : 'Falta Contexto'}</span></div>
+            <div class="seo-item">Palabras Totales: <span class="status-ok">${totalWords}</span></div>
+            <div style="font-size:10px; color:#94a3b8; margin-top:5px;">* El primer módulo se trata como H1 (Título Principal).</div>
+        `;
     }
 
     function renderUI() {
@@ -114,27 +149,29 @@
                     <button class="btn-pos" onclick="mover(${i},1)">▼</button>
                     <button class="btn-pos" style="color:#ff4444" onclick="eliminar(${i})">✕</button>
                 </div>
-                <input type="text" value="${m.titulo}" placeholder="Título" oninput="modulos[${i}].titulo=this.value; updateVp()">
+                <input type="text" value="${m.titulo}" placeholder="${i === 0 ? 'TÍTULO PRINCIPAL (H1)' : 'Subtítulo (H2)'}" oninput="modulos[${i}].titulo=this.value; updateVp()">
                 <textarea oninput="modulos[${i}].texto=this.value; updateVp()">${m.texto}</textarea>
-                <input type="text" value="${m.imagen}" placeholder="Ruta de imagen (ej: assets/foto.png)" oninput="modulos[${i}].imagen=this.value; updateVp()">
+                <input type="text" value="${m.imagen}" placeholder="Ruta de imagen" oninput="modulos[${i}].imagen=this.value; updateVp()">
             `;
             container.appendChild(card);
         });
         updateVp();
+        analizarSEO();
     }
 
     function updateVp() {
         let finalContent = '';
-        modulos.forEach(m => {
+        modulos.forEach((m, index) => {
+            const tag = (index === 0) ? 'h1' : 'h2';
             finalContent += `<section>
                 ${m.imagen ? `<img src="${m.imagen}" alt="${m.titulo}">` : ''}
-                ${m.titulo ? `<h1>${m.titulo}</h1>` : ''}
+                ${m.titulo ? `<${tag}>${m.titulo}</${tag}>` : ''}
                 ${m.texto ? `<p>${m.texto}</p>` : ''}
             </section>`;
         });
         const iframe = document.getElementById('vistaPrevia');
-        // Usamos srcdoc para renderizar el contenido actualizado
         iframe.srcdoc = htmlBase.replace('<div id="app"></div>', `<div id="app">${finalContent}</div>`);
+        analizarSEO();
     }
 
     function mover(i, d) {
@@ -142,7 +179,7 @@
         if(n>=0 && n<modulos.length) { [modulos[i], modulos[n]] = [modulos[n], modulos[i]]; renderUI(); }
     }
 
-    function eliminar(i) { modulos.splice(i,1); renderUI(); }
+    function eliminar(i) { if(confirm('¿Eliminar este módulo?')) { modulos.splice(i,1); renderUI(); } }
     
     function setDevice(t, b) {
         const f = document.getElementById('vistaPrevia');
